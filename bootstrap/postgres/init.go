@@ -10,10 +10,10 @@ func Migration() *migrate.MemoryMigrationSource {
 				Id: "configs_1",
 				Up: []string{
 					`CREATE TABLE IF NOT EXISTS configs (
-						sina_client TEXT UNIQUE NOT NULL,
+						mitras_client TEXT UNIQUE NOT NULL,
 						owner          VARCHAR(254),
 						name           TEXT,
-						sina_key   CHAR(36) UNIQUE NOT NULL,
+						mitras_key   CHAR(36) UNIQUE NOT NULL,
 						external_id    TEXT UNIQUE NOT NULL,
 						external_key   TEXT NOT NULL,
 						content  	   TEXT,
@@ -21,7 +21,7 @@ func Migration() *migrate.MemoryMigrationSource {
 						client_key 	   TEXT,
 						ca_cert 	   TEXT,
 						state          BIGINT NOT NULL,
-						PRIMARY KEY (sina_client, owner)
+						PRIMARY KEY (mitras_client, owner)
 					)`,
 					`CREATE TABLE IF NOT EXISTS unknown_configs (
 						external_id  TEXT UNIQUE NOT NULL,
@@ -29,19 +29,19 @@ func Migration() *migrate.MemoryMigrationSource {
 						PRIMARY KEY (external_id, external_key)
 					)`,
 					`CREATE TABLE IF NOT EXISTS channels (
-						sina_channel TEXT UNIQUE NOT NULL,
+						mitras_channel TEXT UNIQUE NOT NULL,
 						owner    		 VARCHAR(254),
 						name     		 TEXT,
 						metadata 		 JSON,
-						PRIMARY KEY (sina_channel, owner)
+						PRIMARY KEY (mitras_channel, owner)
 					)`,
 					`CREATE TABLE IF NOT EXISTS connections (
 						channel_id    TEXT,
 						channel_owner VARCHAR(256),
 						config_id     TEXT,
 						config_owner  VARCHAR(256),
-						FOREIGN KEY (channel_id, channel_owner) REFERENCES channels (sina_channel, owner) ON DELETE CASCADE ON UPDATE CASCADE,
-						FOREIGN KEY (config_id, config_owner) REFERENCES configs (sina_client, owner) ON DELETE CASCADE ON UPDATE CASCADE,
+						FOREIGN KEY (channel_id, channel_owner) REFERENCES channels (mitras_channel, owner) ON DELETE CASCADE ON UPDATE CASCADE,
+						FOREIGN KEY (config_id, config_owner) REFERENCES configs (mitras_client, owner) ON DELETE CASCADE ON UPDATE CASCADE,
 						PRIMARY KEY (channel_id, channel_owner, config_id, config_owner)
 					)`,
 				},
@@ -75,9 +75,9 @@ func Migration() *migrate.MemoryMigrationSource {
 			{
 				Id: "configs_4",
 				Up: []string{
-					`ALTER TABLE IF EXISTS configs RENAME COLUMN sina_client TO sina_client`,
-					`ALTER TABLE IF EXISTS configs RENAME COLUMN sina_key TO sina_secret`,
-					`ALTER TABLE IF EXISTS channels RENAME COLUMN sina_channel TO sina_channel`,
+					`ALTER TABLE IF EXISTS configs RENAME COLUMN mitras_client TO sina_client`,
+					`ALTER TABLE IF EXISTS configs RENAME COLUMN mitras_key TO sina_secret`,
+					`ALTER TABLE IF EXISTS channels RENAME COLUMN mitras_channel TO sina_channel`,
 				},
 			},
 			{
