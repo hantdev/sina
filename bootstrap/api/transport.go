@@ -13,7 +13,7 @@ import (
 	"github.com/hantdev/mitras"
 	api "github.com/hantdev/mitras/api/http"
 	apiutil "github.com/hantdev/mitras/api/http/util"
-	smqauthn "github.com/hantdev/mitras/pkg/authn"
+	mitrasauthn "github.com/hantdev/mitras/pkg/authn"
 	"github.com/hantdev/mitras/pkg/errors"
 	"github.com/go-chi/chi/v5"
 	kithttp "github.com/go-kit/kit/transport/http"
@@ -38,7 +38,7 @@ var (
 )
 
 // MakeHandler returns a HTTP handler for API endpoints.
-func MakeHandler(svc bootstrap.Service, authn smqauthn.Authentication, reader bootstrap.ConfigReader, logger *slog.Logger, instanceID string) http.Handler {
+func MakeHandler(svc bootstrap.Service, authn mitrasauthn.Authentication, reader bootstrap.ConfigReader, logger *slog.Logger, instanceID string) http.Handler {
 	opts := []kithttp.ServerOption{
 		kithttp.ServerErrorEncoder(apiutil.LoggingErrorEncoder(logger, sinaapi.EncodeError)),
 	}
